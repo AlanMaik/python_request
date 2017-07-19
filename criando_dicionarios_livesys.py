@@ -25,9 +25,11 @@ for i in result:
     if(rex != None):
         teste = i[1]
         a = teste[:7]
-        print a
+        print teste[8::]
     else:
-        print '%s' % (i[1])
+        #print '%s' % (i[1])
+        pass
+
         
     
         
