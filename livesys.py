@@ -38,12 +38,14 @@ def integracao_usuario_cab(tabela='', comentario='', versao_tipo='', versao_cod=
 
 def integracao_usuario_cab_atributos(tabela,atributo_nome,referencia_atributo,atributo_tipo,atributo_tamanho,atributo_decimais,atributo_default,atributo_permitenull):
     cls()
-    convertecampo_tipo = raw_input('Digite aqui convertecampo_tipo: ')
-    convertecampo_case1_condicao = raw_input('Digite aqui convertecampo_case1_condicao: ')
-    convertecampo_case1_valor = raw_input('Digite aqui convertecampo_case1_valor: ')
-    convertecampo_case2_condicao = raw_input('Digite aqui convertecampo_case2_condicao: ')
-    convertecampo_case2_valor = raw_input('Digite aqui convertecampo_case2_valor: ')
-    convertecampo_other_valor = raw_input('Digite aqui convertecampo_other_valor: ')
+    while convertecampo_tipo != '0' or != '1':
+        convertecampo_tipo = raw_input('Digite aqui convertecampo_tipo: [1] Sim ou [0] Não')
+    else:
+        convertecampo_case1_condicao = raw_input('Digite aqui convertecampo_case1_condicao: ')
+        convertecampo_case1_valor = raw_input('Digite aqui convertecampo_case1_valor: ')
+        convertecampo_case2_condicao = raw_input('Digite aqui convertecampo_case2_condicao: ')
+        convertecampo_case2_valor = raw_input('Digite aqui convertecampo_case2_valor: ')
+        convertecampo_other_valor = raw_input('Digite aqui convertecampo_other_valor: ')
     atributo_descricao = raw_input('Digite aqui atributo_descricao: ')
     atributo_adicionafilial = raw_input('Digite aqui atributo_adicionafilial: ')
     atributo_indice = raw_input('Digite aqui atributo_indice: ')
