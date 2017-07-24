@@ -3,15 +3,15 @@ import MySQLdb, re, os
 bitfarma = MySQLdb.connect(
     host = '127.0.0.1', 
     user = 'root', 
-    passwd = '', 
+    passwd = 'bitdemo123', 
     db = 'bitfarma', 
-    port = 3306)
+    port = 9306)
 livesys = MySQLdb.connect(
     host='127.0.0.1',
     user='root',
-    passwd='',
+    passwd='123',
     db='sf_bitfarma',
-    port = 3306)
+    port = 5306)
 def cls():
 
     print("\n" * 100)
@@ -58,9 +58,15 @@ def integracao_usuario_cab_atributos(tabela,atributo_nome,referencia_atributo,at
 
     query = "INSERT INTO `dicionario_integracao_usuario_atributo`(`tabela`,`atributo_nome`,`referencia_atributo`,`atributo_tipo`,`convertecampo_tipo`,`convertecampo_case1_condicao`,`convertecampo_case1_valor`,`convertecampo_case2_condicao`,`convertecampo_case2_valor`,`convertecampo_other_valor`,`atributo_descricao`,`atributo_tamanho`,`atributo_decimais`,`atributo_default`,`atributo_permitenull`,`atributo_adicionafilial`,`atributo_indice`,`atributo_indicetipo`,`atributo_indicenome`,`versao_tipo`,`versao_cod`,`versao_build`,`comentario`) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)" % (`tabela`,`atributo_nome`,`referencia_atributo`,`atributo_tipo`,`convertecampo_tipo`,`convertecampo_case1_condicao`,`convertecampo_case1_valor`,`convertecampo_case2_condicao`,`convertecampo_case2_valor`,`convertecampo_other_valor`,`atributo_descricao`,`atributo_tamanho`,`atributo_decimais`,`atributo_default`,`atributo_permitenull`,`atributo_adicionafilial`,`atributo_indice`,`atributo_indicetipo`,`atributo_indicenome`,`versao_tipo`,`versao_cod`,`versao_build`, `comentario`)   
 
-    print query
+    ##print query
+    return query
 
-def inserir(result):
+def gravar_arquivo(nome_arq, query):
+    arq = open(nome_arq+".txt", "a+")
+    print>> arq, query
+    return True
+
+def inserir(nome_tabela,result):
     cls()
     for i in result: 
        # os.system('cls' if os.name == 'nt' else 'clear')  
@@ -80,27 +86,22 @@ def inserir(result):
                 tamanho = tamanho.split(",")
                 tamanho_1 = tamanho[0]
                 tamanho_2 = tamanho[1]                
-                integracao_usuario_cab_atributos('acerto_',i[0],'',tipo,tamanho_1,tamanho_2,'00','1')
+                query_pronta = integracao_usuario_cab_atributos('acerto_',i[0],'',tipo,tamanho_1,tamanho_2,'00','1')
+                gravar_arquivo(nome_tabela, query_pronta)
                 #print tipo, tamanho_x, tamanho[1]
             elif(rex2 != None):
                continue
             else:
                 tipo = i[1]
                 tipo = tipo.split('(')
-                tamTipo = len(tipo)
-
-                
+                tamTipo = len(tipo)                
                 if(tamTipo>=2):
                     buscar = tipo[1].find(')')
                     tipo[1] = tipo[1].replace(")", "")
-                    print tipo[1]
-                    """
-                    if(parentese !=None):
-                        paren = tipo[1]
-                        tamanho = paren.replace(')', '')
-                        print tamanho
-                
-                    """
+                    query_pronta = integracao_usuario_cab_atributos('acerto_',i[0],'',tipo,tamanho_1,tamanho_2,'00','1')
+                    gravar_arquivo(nome_tabela, query_pronta)
+                    
+                    
         elif(add=="n" or add=="N" or add==""):
             continue
         else:
@@ -112,16 +113,16 @@ def main():
     print "######## OLA BEM VINDO AO PROGRAMA DE INSERCAO DAS TABELAS ########"
     print ""
     print ""
+    try:
 
-    d = bitfarma.cursor()
-    tabela_bitfarma = raw_input("Digite o nome da tabela do programa que usara agora:")
-    query1 = "SHOW FULL columns FROM %s FROM bitfarma" % (tabela_bitfarma)
-    d.execute(query1)
-    result = d.fetchall()
-    inserir(result)
-
-
-  
+        d = bitfarma.cursor()
+        tabela_bitfarma = raw_input("Digite o nome da tabela do programa que usara agora:")
+        query1 = "SHOW FULL columns FROM %s FROM bitfarma" % (tabela_bitfarma)
+        d.execute(query1)
+        result = d.fetchall()
+        inserir(tabela_bitfarma,result)
+    except:
+        main()
 
  
         
