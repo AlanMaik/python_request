@@ -63,12 +63,14 @@ def integracao_usuario_cab_atributos(tabela,atributo_nome,referencia_atributo,at
 def inserir(result):
     cls()
     for i in result: 
-        os.system('cls' if os.name == 'nt' else 'clear')  
+       # os.system('cls' if os.name == 'nt' else 'clear')  
         print "------VERIFICANDO OS ATRIBUTOS -------- \n" 
         print "NOME: %s TIPO: %s COLLATION: %s NULL: %s CHAVE: %s" % (i[0], i[1], i[2], i[3], i[4])
+        
         add = raw_input("Adicionar este ATRIBUTO: ")
         if(add=="s" or add=="S"):
             rex = re.match('(decimal|DECIMAL)', i[1])
+            rex2 = re.match('(sql_deleted|sql_rowid|SQL_DELETED|SQL_ROWID)', i[1]) 
             if(rex != None):
                 tipo_tamanho = i[1]
                 tipo = tipo_tamanho[:7]
@@ -77,17 +79,28 @@ def inserir(result):
                 tamanho = tamanho.replace(')',"") 
                 tamanho = tamanho.split(",")
                 tamanho_1 = tamanho[0]
-                tamanho_2 = tamanho[1]
-                
+                tamanho_2 = tamanho[1]                
                 integracao_usuario_cab_atributos('acerto_',i[0],'',tipo,tamanho_1,tamanho_2,'00','1')
                 #print tipo, tamanho_x, tamanho[1]
-            elif():
-
-                pass
+            elif(rex2 != None):
+               continue
             else:
-                #print '%s' % (i[1])
-                #print i[0], i[1], i[2], i[3], i[4]
-                 pass
+                tipo = i[1]
+                tipo = tipo.split('(')
+                tamTipo = len(tipo)
+
+                
+                if(tamTipo>=2):
+                    buscar = tipo[1].find(')')
+                    tipo[1] = tipo[1].replace(")", "")
+                    print tipo[1]
+                    """
+                    if(parentese !=None):
+                        paren = tipo[1]
+                        tamanho = paren.replace(')', '')
+                        print tamanho
+                
+                    """
         elif(add=="n" or add=="N" or add==""):
             continue
         else:
@@ -110,8 +123,7 @@ def main():
 
   
 
-#SQL_DELETED 
-#SQL_ROWID  
+ 
         
 if __name__ == '__main__':
     main()
